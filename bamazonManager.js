@@ -10,24 +10,24 @@ function chooseDept() {
     	message: "Display departments [Food] or [Beer]",
     	choices: ["Food", "Beer"]
   	}).then(function(user) {
-  	var deptChoice = user.choice
-    displayDeptProducts(deptChoice);
+  	var deptName = user.choice
+    displayDeptProducts(deptName);
   });
 }
-function displayDeptProducts(deptChoice) {
-    connection.query('SELECT * FROM products WHERE ?', [{dept_name: deptChoice }], 
+function displayDeptProducts(deptName) {
+    connection.query('SELECT * FROM products WHERE ?', [{dept_name: deptName}], 
     	function(err, res) {
         if (err) { console.log(err) };
-        var productsTbl = new Table({
+        var deptProductsTbl = new Table({
             head: ['Item ID', 'Product', 'Category', 'Price', 'Quantity'],
             colWidths: [10, 15, 10, 10, 10]
         });
         for (i = 0; i < res.length; i++) {
-            productsTbl.push(
+            deptProductsTbl.push(
                 [res[i].item_id, res[i].product_name, res[i].dept_name, res[i].price, res[i].stk_quantity]
             );
         }
-        console.log(productsTbl.toString());
+        console.log(deptProductsTbl.toString());
         mainInquirer();
     });
 };
@@ -133,10 +133,8 @@ function addNewProduct() {
     });
 };
 function createNewProduct(productName, deptName, price, quantity) {
-    connection.query('INSERT INTO products(product_name, dept_name, price, stk_quantity) VALUES ("' + productName + '","' + 
-        deptName + '",' +
-        price + ',' +
-        quantity + ')');
+    connection.query('INSERT INTO products(product_name, dept_name, price, stk_quantity) VALUES ("' + productName + '","' + deptName + '",' +
+        price + ',' + quantity + ')');
     mainInquirer();
 };
 function removeInqurier() {
@@ -146,12 +144,11 @@ function removeInqurier() {
             type: "input",
             message: "Item ID?"
         },
-
     ]).then(function(userInput) {
         var id = userInput.id;
         removeProduct(id);    
     });
-}
+};
 function removeProduct(id) {
     connection.query('DELETE FROM products WHERE item_id = ' + id);
     mainInquirer();
