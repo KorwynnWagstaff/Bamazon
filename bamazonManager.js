@@ -63,12 +63,12 @@ function displayLowInventory() {
     connection.query('SELECT * FROM products WHERE stk_quantity <= 5 ORDER BY stk_quantity ASC', function(err, res) {
         if (err) { console.log(err) };
         var lowInvTbl = new Table({
-            head: ['Item ID', 'Product', 'Quantity'],
-            colWidths: [10, 15, 10]
+            head: ['Item ID', 'Department', 'Product', 'Quantity'],
+            colWidths: [10, 10, 15, 10]
         });
         for (i = 0; i < res.length; i++) {
             lowInvTbl.push(
-                [res[i].item_id, res[i].product_name, res[i].stk_quantity]
+                [res[i].item_id, res[i].dept_name, res[i].product_name, res[i].stk_quantity]
             );
         }
         console.log(lowInvTbl.toString());
