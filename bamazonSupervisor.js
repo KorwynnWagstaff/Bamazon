@@ -8,12 +8,12 @@ function displayDeptSales(deptName) {
     	function(err, res) {
         if (err) { console.log(err) };
         var deptProductsTbl = new Table({
-            head: ['Department ID', ' Dept. Name', 'Overhead Costs', 'Sales' ],
-            colWidths: [15, 15, 20, 10]
+            head: ['Department ID', ' Dept. Name', 'Overhead Costs', 'Sales', "Total Profit"],
+            colWidths: [15, 15, 20, 10, 15]
         });
         for (i = 0; i < res.length; i++) {
             deptProductsTbl.push(
-                [res[i].dept_id, res[i].dept_name, res[i].over_head_cost, res[i].product_sales]
+                [res[i].dept_id, res[i].dept_name, res[i].over_head_cost, res[i].product_sales, (res[i].product_sales - res[i].over_head_cost)]
             );
         }
         console.log(deptProductsTbl.toString());

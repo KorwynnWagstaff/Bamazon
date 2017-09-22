@@ -64,12 +64,14 @@ function purchse(id, deptName, quantity) {
             console.log("Total cost for " + res[0].product_name + "[" + quantity + "]" + " is " + "$" + totalCost + ".");
             connection.query('UPDATE products SET stk_quantity = stk_quantity - ' + quantity + ' WHERE item_id = ' + id, function(err, res) {
             	if (err) { console.log(err) };
-            	connection.query('UPDATE departments SET product_sales = product_sales + ' + totalCost + ' WHERE dept_name = ' + deptName);
+            	connection.query('UPDATE departments SET product_sales = product_sales + ' + totalCost + ' WHERE dept_name = "' + deptName + '"', function(err, res) {
+                    if (err) { console.log(err) };
+                    chooseDept();
+                });     
             });        
         } else {
-            console.log("Insufficent quatity of" + res[0].product_name + "(s)!");
+            console.log("Insufficent quatity of " + res[0].product_name + "(s)!");
         }
-        chooseDept();
     });
 };
 chooseDept();
